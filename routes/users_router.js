@@ -1,8 +1,7 @@
 const router = require('express').Router();
-
 const bcrypt = require('bcryptjs');
-
 const Users = require('./users_model.js');
+const restricted = require('../api/restricted-middleware');
 
 router.post("/register", (req, res) => {
     let { username, password } = req.body;
@@ -28,13 +27,14 @@ router.post("/login", (req, res) => {
         .first()
         .then(user => {
             if (user && bcrypt.compareSync(password, user.password)) {
+                req.session.user = user;
                 res
                     .status(200)
                     .json({ message: `Welcome ${user.username}!` });
             } else {
                 res
                     .status(401)
-                    .json({ message: "You cannot pass!" });
+                    .json({ message: "You.. shall not.. pass!" });
             }
         })
         .catch(error => {
@@ -44,7 +44,7 @@ router.post("/login", (req, res) => {
         });
 });
 
-router.get("/users", (req, res) => {
+router.get("/users", restricted, (req, res) => {
     Users.find()
         .then(users => {
             res
@@ -55,6 +55,22 @@ router.get("/users", (req, res) => {
                 .status(500)
                 .send(error)
         });
+});
+
+router.get('/logout', (req, res) => {
+    if(req.session) {
+        req.session.destroy(error => {
+            if (error) {
+                res
+                    .status(401)
+                    .json({errorMessage: "No User to Logout."})
+            } else {
+                res
+                    .status(200)
+                    .json({message: "You've been logged out."})
+            }
+        });
+    }
 });
 
 

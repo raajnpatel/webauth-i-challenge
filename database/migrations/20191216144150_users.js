@@ -8,7 +8,7 @@ exports.up = function(knex) {
             .unique();
         users
             .string('password', 128)
-            .notNullable();// what happens if we delete the parents record (on roles)
+            .notNullable();
     });
 };
 
