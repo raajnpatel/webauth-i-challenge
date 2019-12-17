@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../App.css";
 
-function LoginForm() {
+function RegisterForm() {
     const axiosWithAuth = () => {
         return axios
             .create({
@@ -14,25 +14,25 @@ function LoginForm() {
             });
     };
 
-    const [login, setLogin] = useState({
+    const [register, setRegister] = useState({
         username: "",
         password: ""
     });
 
     const handleChange = event => {
-        setLogin({ ...login, [event.target.name]: event.target.value });
+        setRegister({ ...register, [event.target.name]: event.target.value });
     };
 
     const handleSubmit = event => {
         event.preventDefault();
-        console.log("Login Info", login);
+        console.log("Registration Info", register);
         axiosWithAuth()
-            .post(`/login`, login)
+            .post(`/register`, register)
             .then(res => {
                 console.log("Response from Server", res);
             })
-            .catch(error => console.log("Error occured during Login", error));
-        setLogin({
+            .catch(error => console.log("Error occured during Registration", error));
+        setRegister({
             username: "",
             password: ""
         });
@@ -46,7 +46,7 @@ function LoginForm() {
                     <input
                         type="text"
                         name="username"
-                        value={login.username}
+                        value={register.username}
                         onChange={handleChange}
                     />
                 </label>
@@ -56,7 +56,7 @@ function LoginForm() {
                     <input
                         type="password"
                         name="password"
-                        value={login.password}
+                        value={register.password}
                         onChange={handleChange}
                     />
                 </label>
@@ -67,4 +67,4 @@ function LoginForm() {
     )
 }
 
-export default LoginForm;
+export default RegisterForm;
