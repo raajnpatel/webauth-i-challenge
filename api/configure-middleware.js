@@ -33,6 +33,11 @@ const sessionsConfig = {
 module.exports = server => {
   server.use(helmet());
   server.use(express.json());
-  server.use(cors());
+  server.use(cors({origin: "http://localhost:3000",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true
+  }));
   server.use(sessions(sessionsConfig));
 };
