@@ -4,13 +4,14 @@ import "./App.css";
 
 function App() {
   const axiosWithAuth = () => {
-    return axios.create({
-      baseURL: "http://localhost:4444/api",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      withCredentials: true
-    });
+    return axios
+        .create({
+          baseURL: "http://localhost:4444/api",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          withCredentials: true
+        });
   };
 
   const [login, setLogin] = useState({
@@ -24,13 +25,13 @@ function App() {
 
   const handleSubmit = event => {
     event.preventDefault();
-    console.log("login info", login);
+    console.log("Login Info", login);
     axiosWithAuth()
         .post(`/login`, login)
         .then(res => {
-          console.log("response from server", res);
+          console.log("Response from Server", res);
         })
-        .catch(err => console.log("error in login", err));
+        .catch(error => console.log("Error occured during Login", error));
     setLogin({
       username: "",
       password: ""
@@ -41,7 +42,7 @@ function App() {
     axiosWithAuth()
         .get("/users")
         .then(res => console.log("users", res))
-        .catch(error => console.log("error in users", error));
+        .catch(error => console.log("Error occured while fetching Users", error));
   };
 
   return (
